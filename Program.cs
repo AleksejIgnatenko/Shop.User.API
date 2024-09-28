@@ -1,3 +1,5 @@
+using Shop.User.API.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +9,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddGrpc();
+
 var app = builder.Build();
+
+app.MapGrpcService<UserGrpcService>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

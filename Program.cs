@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Shop.User.API;
+using Shop.User.API.Abstractions;
+using Shop.User.API.Repositories;
 using Shop.User.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +14,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddGrpc();
+
+builder.Services.AddDbContext<UserApiDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 

@@ -1,4 +1,4 @@
-﻿namespace Shop.User.API.Enum
+﻿namespace Shop.User.API.Enums
 {
     public enum UserRole
     {

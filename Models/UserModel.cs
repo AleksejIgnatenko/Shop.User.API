@@ -1,4 +1,4 @@
-﻿using Shop.User.API.Enum;
+﻿using Shop.User.API.Enums;
 
 namespace Shop.User.API.Models
 {

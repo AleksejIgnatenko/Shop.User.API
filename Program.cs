@@ -13,8 +13,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddGrpc();
-
 builder.Services.AddDbContext<UserApiDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -24,8 +22,6 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
-
-app.MapGrpcService<UserGrpcService>();
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())

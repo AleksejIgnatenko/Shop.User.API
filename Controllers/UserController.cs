@@ -16,6 +16,26 @@ namespace Shop.User.API.Controllers
             _userService = userService;
         }
 
+        [HttpPost]
+        public async Task<ActionResult<Guid>> CreateUserAsync(UserRequest userRequest)
+        {
+            try
+            {
+                var userId = await _userService.CreateUserAsync(userRequest.Id, userRequest.UserName, userRequest.Email,
+                    userRequest.Telephone, userRequest.Password, userRequest.Role);
+
+                return Ok(userRequest.Id);
+            }
+            catch (ValidatorException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (UserException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPut]
         public async Task<ActionResult<Guid>> UpdateUserAsync(Guid id, [FromBody] UpdateUsersRequest updateUsersRequest)
         {
@@ -28,7 +48,7 @@ namespace Shop.User.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            catch (UpdateUserException ex)
+            catch (UserException ex)
             {
                 return BadRequest(ex.Message);
             }

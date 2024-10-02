@@ -5,7 +5,7 @@ namespace Shop.User.API.Abstractions
 {
     public interface IUserRepository
     {
-        Task<Guid> CreateUserAsync(UserEntity userEntity);
+        Task<Guid> CreateUserAsync(UserModel userModel);
         Task<Guid> UpdateUserAsync(UserModel user);
     }
 }

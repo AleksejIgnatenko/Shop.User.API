@@ -45,5 +45,21 @@ namespace Shop.User.API.Models
             }
             return (error, user);
         }
+
+        public static (string error, UserModel user) Create(Guid id, string userName, string email, string telephone, string password, UserRole role)
+        {
+            string error = string.Empty;
+            UserModel user = new UserModel(id, userName, email, telephone, password, role);
+            UserValidator userValidator = new UserValidator();
+            ValidationResult result = userValidator.Validate(user);
+            if (!result.IsValid)
+            {
+                foreach (var failure in result.Errors)
+                {
+                    error += failure + "\n";
+                }
+            }
+            return (error, user);
+        }
     }
 }

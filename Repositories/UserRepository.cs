@@ -15,12 +15,34 @@ namespace Shop.User.API.Repositories
             _context = context;
         }
 
-        public async Task<Guid> CreateUserAsync(UserEntity userEntity)
+        public async Task<Guid> CreateUserAsync(UserModel userModel)
         {
+            var userEntity = new UserEntity
+            {
+                Id = userModel.Id,
+                UserName = userModel.UserName,
+                Email = userModel.Email,
+                Telephone = userModel.Telephone,
+                Password = userModel.Password,
+                Role = userModel.Role,
+            };
+
             await _context.Users.AddAsync(userEntity);
             await _context.SaveChangesAsync();
 
             return userEntity.Id;
+        }
+
+        public async Task<List<UserModel>> GetAllUsersAsync()
+        {
+            var userEntities = await _context.Users.ToListAsync();
+            if (userEntities.Any())
+            {
+                var users = userEntities.Select(u => UserModel.Create(u.Id, u.UserName, u.Email, u.Telephone, u.Password, u.Role).user).ToList();
+                return users;
+            }
+
+            throw new UserException("Failed to get users");
         }
 
         public async Task<Guid> UpdateUserAsync(UserModel user)
@@ -34,7 +56,7 @@ namespace Shop.User.API.Repositories
                 await _context.SaveChangesAsync();
             }
 
-            throw new UpdateUserException("Возникли проблемы при изменении...");
+            throw new UserException("There were problems changing...");
         }
     }
 }

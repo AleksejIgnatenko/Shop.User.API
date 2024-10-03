@@ -34,8 +34,8 @@ namespace Shop.User.API.Models
         {
             string error = string.Empty;
             UserModel user = new UserModel(id, userName, telephone);
-            UserValidator userValidator = new UserValidator();
-            ValidationResult result = userValidator.Validate(user);
+            UserUpdateValidator userUpdateValidator = new UserUpdateValidator();
+            ValidationResult result = userUpdateValidator.Validate(user);
             if(!result.IsValid)
             {
                 foreach(var failure in result.Errors)

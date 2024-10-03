@@ -2,6 +2,8 @@
 using Shop.User.API.Abstractions;
 using Shop.User.API.Contracts;
 using Shop.User.API.CustomExceptions;
+using Shop.User.API.Models;
+using Shop.User.API.Repositories;
 
 namespace Shop.User.API.Controllers
 {
@@ -10,10 +12,12 @@ namespace Shop.User.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, ILogger<UserController> logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -28,11 +32,37 @@ namespace Shop.User.API.Controllers
             }
             catch (ValidatorException ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
             catch (UserException ex)
             {
-                return BadRequest(ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<UserModel>>> GetAllUsersAsync()
+        {
+            try
+            {
+                return await _userService.GetAllUsersAsync();
+            }
+            catch (UserException ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -46,11 +76,18 @@ namespace Shop.User.API.Controllers
             }
             catch (ValidatorException ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
             catch (UserException ex)
             {
-                return BadRequest(ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
     }

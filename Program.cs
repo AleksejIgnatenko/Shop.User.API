@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shop.User.API;
 using Shop.User.API.Abstractions;
+using Shop.User.API.Middleware;
 using Shop.User.API.Repositories;
 using Shop.User.API.Services;
 
@@ -32,6 +33,8 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
